@@ -34,6 +34,7 @@ use File::Find::Rule;
 use Path::Tiny;
 use Try::Tiny;
 use YAML::Tiny;
+use CSS::Sass;
 
 use HiD::File;
 use HiD::Layout;
@@ -642,6 +643,29 @@ sub _build_potential_draft_posts_list {
     ->name( $self->draft_post_file_regex )->in( @posts_directories );
 
   return @potential_posts;
+}
+
+has sass => (
+  is      => 'ro',
+  isa     => 'HashRef',
+  lazy    => 1,
+  builder => '_build_sass'
+);
+
+sub _build_sass {
+  my( $self ) = @_;
+
+  my $sass = CSS::Sass->new(
+               include_paths => ['_sass'],
+               output_style  => SASS_STYLE_COMPRESSED;
+
+  my $rule = File::Find::Rule->new;
+
+  my @sass_files = $rule->file()
+                        ->name('*.scss')
+                        ->in('_sass/');
+
+  $self->INFO(@sass_files);
 }
 
 =attr processor
