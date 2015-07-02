@@ -11,31 +11,18 @@ package HiD::Server;
 use 5.014; # strict, unicode_strings
 use warnings;
 
-use parent 'Plack::App::File';
+use OX;
 
-=method locate_file
 
-Overrides L<Plack::App::File>'s method of the same name to handle '/' and
-'/index.html' cases
+has page => (
+  is    => 'ro',
+  isa   => 'HiD::Server::Controller::Page',
+);
 
-=cut
-
-sub locate_file {
-  my ($self, $env) = @_;
-
-  my $path = $env->{PATH_INFO} || '';
-
-  $path =~ s|^/|| unless $path eq '/';
-
-  if ( -e -d $path and $path !~ m|/$| ) {
-    $path .= '/';
-    $env->{PATH_INFO} .= '/';
-  }
-
-  $env->{PATH_INFO} .= 'index.html'
-    if ( $path && $path =~ m|/$| );
-
-  return $self->SUPER::locate_file( $env );
-}
+router as {
+  route '/' => 'page.index',
+  route '/:page' => 'page.view',
+  # route '/notebook/:year/:month/:day/:article' => 'article.view'
+};
 
 1;
