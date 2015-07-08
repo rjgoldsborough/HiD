@@ -12,15 +12,13 @@ extends 'HiD::Server::Controller';
 sub index {
   my ($self, $env) = @_;
 
-  $env->{PATH_INFO} = 'index.html';
-
-  return $env->{PATH_INFO};
+  p $self
 }
 
 sub view {
   my ($req, $self, $page) = @_;
 
-  p @_
+  p $self; 
 }
 
 1;

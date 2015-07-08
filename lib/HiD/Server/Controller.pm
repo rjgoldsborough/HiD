@@ -3,13 +3,30 @@ package HiD::Server::Controller;
 use 5.014; # strict, unicode_strings
 use warnings;
 use Moose;
+use Data::Printer;
+
+has hid => (
+  is       => 'ro',
+  isa      => 'HiD',
+  handles  => [ qw/ get_config / ],
+);
 
 sub index {
-  my ($self, $env) = @_;
+  my ($req, $self, $env) = @_;
 
-  $env->{PATH_INFO} = 'index.html';
+  return 'index';
+}
 
-  return $self->SUPER::locate_file($env);
+sub view {
+  my ($req, $self, $env) = @_;
+
+  return 'viewing';
+}
+
+sub edit {
+  my ($req, $self, $env) = @_;
+
+  return 'editing';
 }
 
 1;

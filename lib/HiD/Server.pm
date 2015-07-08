@@ -13,6 +13,13 @@ use warnings;
 
 use OX;
 
+has hid => (
+  is       => 'ro',
+  isa      => 'HiD',
+  required => 1,
+  handles  => [ qw/ get_config / ],
+);
+
 
 has page => (
   is    => 'ro',
@@ -22,6 +29,7 @@ has page => (
 router as {
   route '/' => 'page.index',
   route '/:page' => 'page.view',
+  route '/:page/edit' => 'page.edit',
   # route '/notebook/:year/:month/:day/:article' => 'article.view'
 };
 

@@ -98,7 +98,7 @@ sub execute {
 
   $self->_set_hid_config( $hid_config );
 
-  $self->_run( $opts , $args );
+  $self->_run( $self, $opts , $args );
 }
 
 =method reset_hid
